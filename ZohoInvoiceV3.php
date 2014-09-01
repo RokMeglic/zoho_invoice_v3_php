@@ -69,17 +69,13 @@ Class ZohoInvoiceV3 {
     }
 
     public function getContactIdOrCreateContact() {
-        // RM: Get contact
-        $fields = array('email' => $this->data['invoice_data']['user_data']['c_users_email']);
-
-        //Initialize connection
-        $response = $this->sendRequest('contacts', $fields, 'GET');
-
         // RM: Go trough contact
         $contactId = false;
         if (is_array($response->contacts)) {
             foreach($response->contacts as $contact) {
-                $contactId = $contact->contact_id;
+                if ($contact->email == $this->data['invoice_data']['user_data']['c_users_email']) {
+                    $contactId = $contact->contact_id;
+                }
             }
         }
 
